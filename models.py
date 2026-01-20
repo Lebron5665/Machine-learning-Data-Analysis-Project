@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
-
-# 尝试导入 timm 库，如果没有安装则报错提示
 try:
     import timm
 except ImportError:
@@ -19,17 +17,12 @@ def get_model(model_name, num_classes=10, pretrained=False):
     """
     
     # ==========================================
-    # 1. 构建 ResNet-18 (CNN 代表)
+    # 1. 构建 ResNet-18 
     # ==========================================
     if model_name.lower() == 'resnet':
-        # print(f"[Model] Initializing ResNet-18 for CIFAR-10...")
-        
         # 加载官方 ResNet18 结构
         net = models.resnet18(pretrained=pretrained)
         
-        # -----------------------------------------------------------
-        # 关键修改：适配 CIFAR-10 的小尺寸图片 (32x32)
-        # -----------------------------------------------------------
         # 修改第一层卷积：从 7x7 stride=2 改为 3x3 stride=1
         net.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
         
@@ -43,7 +36,7 @@ def get_model(model_name, num_classes=10, pretrained=False):
         return net
 
     # ==========================================
-    # 2. 构建 Vision Transformer (ViT 代表)
+    # 2. 构建 Vision Transformer
     # ==========================================
     elif model_name.lower() == 'vit':
         # print(f"[Model] Initializing ViT-Tiny for CIFAR-10...")
