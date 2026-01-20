@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import time
 import os
 
-# 导入我们之前写的模块
 from dataset import get_data_loaders
 from models import get_model
 
@@ -13,7 +12,7 @@ from models import get_model
 # 1. 配置参数 (Hyperparameters)
 # -----------------------------------------------------------
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-BATCH_SIZE = 64     # 如果显存不够 (如 ViT OOM)，请调小到 32
+BATCH_SIZE = 64    
 LEARNING_RATE = 1e-4 # 对于 ViT 和 ResNet 通用的较小学习率
 EPOCHS = 30        
 DATA_DIR = './data'
@@ -81,7 +80,6 @@ def run_experiment(model_name):
     model = get_model(model_name, num_classes=10, pretrained=False).to(DEVICE)
     
     # 3. 定义优化器和损失
-    # 注意：ViT 通常推荐使用 AdamW，为了公平对比，这里两者都用 AdamW
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-4)
     
